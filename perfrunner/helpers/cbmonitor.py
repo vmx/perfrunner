@@ -53,8 +53,7 @@ class CbAgent(object):
             cluster = '{}_{}_{}'.format(cluster_name,
                                         test.build.replace('.', ''),
                                         uhex()[:3])
-            master = servers[0].split(':')[0]
-            self.clusters[cluster] = master
+            self.clusters[cluster] = servers[0]
 
         self.index_node = ''
         for _, servers in test.cluster_spec.yield_servers_by_role('index'):
