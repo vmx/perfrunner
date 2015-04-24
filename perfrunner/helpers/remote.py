@@ -201,14 +201,15 @@ class RemoteLinuxHelper(object):
     @all_hosts
     def restart(self):
         logger.info('Restarting server')
-        run('numactl --interleave=all /etc/init.d/couchbase-server restart')
+        run('numactl --interleave=all /etc/init.d/couchbase-server restart',
+            pty=False)
 
     @all_hosts
     def restart_with_alternative_num_vbuckets(self, num_vbuckets):
         logger.info('Changing number of vbuckets to {}'.format(num_vbuckets))
         run('COUCHBASE_NUM_VBUCKETS={} '
             'numactl --interleave=all /etc/init.d/couchbase-server restart'
-            .format(num_vbuckets))
+            .format(num_vbuckets), pty=False)
 
     @all_hosts
     def restart_with_alternative_num_cpus(self, num_cpus):
@@ -216,19 +217,21 @@ class RemoteLinuxHelper(object):
                     .format(num_cpus))
         run('MEMCACHED_NUM_CPUS={} '
             'numactl --interleave=all /etc/init.d/couchbase-server restart'
-            .format(num_cpus))
+            .format(num_cpus), pty=False)
 
     @all_hosts
     def restart_with_sfwi(self):
         logger.info('Enabling +sfwi')
         run('COUCHBASE_NS_SERVER_VM_EXTRA_ARGS=\'["+sfwi", "100", "+sbwt", "long"]\' '
-            'numactl --interleave=all /etc/init.d/couchbase-server restart')
+            'numactl --interleave=all /etc/init.d/couchbase-server restart',
+            pty=False)
 
     @all_hosts
     def restart_with_tcmalloc_aggressive_decommit(self):
         logger.info('Enabling TCMalloc aggressive decommit')
         run('TCMALLOC_AGGRESSIVE_DECOMMIT=t '
-            'numactl --interleave=all /etc/init.d/couchbase-server restart')
+            'numactl --interleave=all /etc/init.d/couchbase-server restart',
+            pty=False)
 
     @all_hosts
     def disable_moxi(self):
@@ -243,7 +246,7 @@ class RemoteLinuxHelper(object):
         if(getosname.find("CYGWIN") != -1):
             run('net stop CouchbaseServer')
         else:
-            run('/etc/init.d/couchbase-server stop')
+            run('/etc/init.d/couchbase-server stop', pty=False)
 
     @all_hosts
     def start_server(self):
@@ -252,7 +255,7 @@ class RemoteLinuxHelper(object):
         if(getosname.find("CYGWIN") != -1):
             run('net start CouchbaseServer')
         else:
-            run('/etc/init.d/couchbase-server start')
+            run('/etc/init.d/couchbase-server start', pty=False)
 
     def detect_if(self):
         for iface in ('em1', 'eth5', 'eth0'):
