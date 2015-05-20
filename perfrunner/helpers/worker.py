@@ -96,6 +96,7 @@ class RemoteWorkerManager(object):
         self.workers = []
         for target in target_iterator:
             logger.info('Running workload generator')
+            logger.info('perfrunner worker settings: {}'.format(settings))
 
             qname = '{}-{}'.format(target.node.split(':')[0], target.bucket)
             queue = Queue(name=qname)
@@ -108,6 +109,7 @@ class RemoteWorkerManager(object):
 
     def wait_for_workers(self):
         for worker in self.workers:
+            print("vmx: perfrunner helper worker wait: worker: {}".format(worker))
             worker.wait()
 
     def terminate(self):

@@ -200,6 +200,11 @@ class TestConfig(Config):
         return IndexSettings(options)
 
     @property
+    def spatial_settings(self):
+        options = self._get_options_as_dict('spatial')
+        return SpatialSettings(options)
+
+    @property
     def secondaryindex_settings(self):
         options = self._get_options_as_dict('secondary')
         return SecondaryIndexSettings(options)
@@ -453,6 +458,8 @@ class PhaseSettings(object):
         self.throughput = float(options.get('throughput', self.THROUGHPUT))
         self.query_throughput = float(options.get('query_throughput',
                                                   self.QUERY_THROUGHPUT))
+        self.spatial_throughput = float(options.get('query_throughput',
+                                                    float('inf')))
         self.n1ql_throughput = float(options.get('n1ql_throughput',
                                                  self.N1QL_THROUGHPUT))
 
@@ -467,9 +474,15 @@ class PhaseSettings(object):
         self.workers = int(options.get('workers', self.WORKERS))
         self.query_workers = int(options.get('query_workers',
                                              self.QUERY_WORKERS))
+        # XXX vmx 2015-05-08: this `spatial_workers` should be moved int the [spatial] section
+        self.spatial_workers = int(options.get('spatial_workers', 0))
         self.n1ql_workers = int(options.get('n1ql_workers',
                                             self.N1QL_WORKERS))
         self.dcp_workers = int(options.get('dcp_workers', self.DCP_WORKERS))
+
+        # XXX vmx 2015-05-15: Should be moved to the spatial section
+        self.spatial_queries = options.get('spatial_queries', None)
+        self.view_names = options.get('view_names', [])
 
         self.n1ql_queries = []
         if 'n1ql_queries' in options:
@@ -489,7 +502,9 @@ class PhaseSettings(object):
 
         self.iterations = int(options.get('iterations', self.ITERATIONS))
 
-        self.filename = None
+        self.dimensionality = int(options.get('dimensionality', 0))
+        # XXX vmx 2015-05-15: Should be moved to the spatial section
+        self.data = options.get('data', None)
 
     def __str__(self):
         return str(self.__dict__)
@@ -535,6 +550,19 @@ class IndexSettings(PhaseSettings):
         self.disabled_updates = int(options.get('disabled_updates',
                                                 self.DISABLED_UPDATES))
         self.index_type = options.get('index_type')
+
+
+class SpatialSettings(PhaseSettings):
+
+    def __init__(self, options):
+        self.indexes = []
+        if 'indexes' in options:
+            self.indexes = options.get('indexes').strip().split('\n')
+        self.disabled_updates = int(options.get('disabled_updates', 0))
+        self.dimensionality = int(options.get('dimensionality', 0))
+        self.data = options.get('data', None)
+        self.spatial_queries = options.get('spatial_queries', None)
+        self.qparams = options.get('qparams', {})
 
 
 class SecondaryIndexSettings(PhaseSettings):

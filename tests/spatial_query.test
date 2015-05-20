@@ -1,0 +1,40 @@
+[test_case]
+test = perfrunner.tests.view.SpatialQueryThroughputTest
+title = Spatial View query throughput (qps), 1 bucket x 20k x 2KB, non-DGM, 4 x 1 views, 500 mutations/sec/node
+summary = Read-heavy spatial view query test (80/20), 4 nodes, 1 bucket x 100M x 2KB, DGM, 4 x 1 views, 500 mutations/sec/node, unbounded qps
+larger_is_better = true
+
+[cluster]
+mem_quota = 2048
+initial_nodes = 1
+num_buckets = 1
+
+[load]
+items = 20000
+size = 2048
+workers = 1
+doc_gen = spatial
+dimensionality = 2
+data = /home/vmx/data/rtree/data/abs02
+
+[spatial]
+indexes =
+    main::{"spatial":{"geom":"function (doc) {\n  if (doc.a !== undefined && doc.b !== undefined) {\n    emit([doc.a, doc.b], null);\n  }\n}"}}
+view_names = [main::geom]
+dimensionality = 2
+spatial_queries = /home/vmx/data/rtree/query0/abs02
+
+
+[access]
+throughput = 10
+items = 20000
+size = 2048
+workers = 0
+time = 20
+doc_gen = spatial
+dimensionality = 2
+spatial_workers = 1
+spatial_throughput = 10
+data = /home/vmx/data/rtree/data/abs02
+spatial_queries = /home/vmx/data/rtree/query0/abs02
+
