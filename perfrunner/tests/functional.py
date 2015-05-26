@@ -12,13 +12,11 @@ class FunctionalTest(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         options, _args = get_options()
-        override = \
-            _args and (arg.split('.') for arg in ' '.join(_args).split(','))
 
         self.cluster_spec = ClusterSpec()
-        self.cluster_spec.parse(options.cluster_spec_fname)
+        self.cluster_spec.parse(options.cluster_spec_fname, args)
         self.test_config = TestConfig()
-        self.test_config.parse(options.test_config_fname, override)
+        self.test_config.parse(options.test_config_fname, args)
 
         self.target_iterator = TargetIterator(self.cluster_spec,
                                               self.test_config)
