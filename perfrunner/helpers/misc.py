@@ -1,9 +1,10 @@
+import hashlib
 import json
 import time
-from hashlib import md5
 from uuid import uuid4
 
 from logger import logger
+import requests
 
 
 def uhex():
@@ -21,7 +22,7 @@ def log_phase(phase, settings):
 
 def target_hash(*args):
     int_hash = hash(args)
-    str_hash = md5(hex(int_hash)).hexdigest()
+    str_hash = hashlib.md5(hex(int_hash)).hexdigest()
     return str_hash[:6]
 
 
@@ -81,3 +82,27 @@ def retry(catch=(), iterations=5, wait=10):
                 time.sleep(wait)
         return retry_wrapper
     return retry_decorator
+
+
+def download_file_verify(url, filename, sha1):
+    """Returns true if the downloaded file matches the given SHA1."""
+    _download_file(url, filename)
+    return _verify_sha1(filename, sha1)
+
+
+# From http://stackoverflow.com/a/16696317/935109 (2015-06-17)
+def _download_file(url, filename):
+    logger.info("Downloading {} as {}".format(url, filename))
+    r = requests.get(url, stream=True)
+    with open(filename, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024):
+            if chunk:  # filter out keep-alive new chunks
+                f.write(chunk)
+                f.flush()
+    return filename
+
+
+def _verify_sha1(path, expected_sha1):
+    with open(path, 'rb') as f:
+        sha1 = hashlib.sha1(f.read()).hexdigest()
+    return sha1 == expected_sha1
