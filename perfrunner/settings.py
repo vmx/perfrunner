@@ -1,12 +1,13 @@
 import csv
 import json
 import os.path
+import urlparse
 from ConfigParser import SafeConfigParser, NoOptionError, NoSectionError
 
 from decorator import decorator
 from logger import logger
 
-from perfrunner.helpers.misc import uhex
+from perfrunner.helpers.misc import download_file_verify, uhex
 
 
 REPO = 'https://github.com/couchbase/perfrunner'
@@ -641,6 +642,8 @@ class IndexSettings(object):
 
 class SpatialSettings(object):
 
+    FILE_ROOT = '/tmp/spatial'
+
     def __init__(self, options):
         self._section = options['_section']
         self.indexes = []
@@ -649,15 +652,41 @@ class SpatialSettings(object):
         self.disabled_updates = int(options.get('disabled_updates', 0))
         self.dimensionality = int(options.get('dimensionality', 0))
         self.data = options.get('data', None)
+        if self.data:
+            self.data = self.get_file(self.data, 'data')
+        self.queries = options.get('queries', None)
+        if self.queries:
+            subdir = self.queries.split('/')[-2]
+            self.queries = self.get_file(self.queries, subdir)
         if 'view_names' in options:
             self.view_names = options.get('view_names').strip().split('\n')
-        self.queries = options.get('queries', None)
         self.workers = int(options.get('workers', 0))
         self.throughput = float(options.get('throughput', float('inf')))
         self.params = json.loads(options.get('params', "{}"))
 
     def __str__(self):
         return str(self.__dict__)
+
+    def get_file(self, url_sha1, subdir):
+        """Get a file from an URL.
+
+        The filename of the downloaded file will the basename of the URL.
+        It will be put under the ``FILE_ROOT/subdir`` directory.
+        The URL contains an SHA1 hash added as fragment identifier
+        (``http://somewhere/filename#sha1``).
+
+        Return value is the filename of the downloaded file.
+        """
+        url, sha1 = urlparse.urldefrag(url_sha1)
+        path = os.path.join(self.FILE_ROOT, subdir)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        filename = os.path.join(path, url.split('/')[-1])
+        if os.path.exists(filename):
+            return filename
+        if not download_file_verify(url, filename, sha1):
+            logger.interrupt("Download of {} failed".format(url))
+        return filename
 
 
 class SecondaryIndexSettings(object):
