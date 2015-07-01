@@ -236,6 +236,13 @@ class TestConfig(Config):
 
     @property
     @safe
+    def mapreduce_settings(self):
+        options = self._get_options_as_dict('mapreduce')
+        if options:
+            return MapreduceSettings(options)
+
+    @property
+    @safe
     def spatial_settings(self):
         options = self._get_options_as_dict('spatial')
         if options:
@@ -644,6 +651,23 @@ class IndexSettings(object):
         self.disabled_updates = int(options.get('disabled_updates',
                                                 self.DISABLED_UPDATES))
         self.index_type = options.get('index_type')
+
+    def __str__(self):
+        return str(self.__dict__)
+
+
+class MapreduceSettings(object):
+
+    def __init__(self, options):
+        self._section = options['_section']
+        self.indexes = []
+        if 'indexes' in options:
+            self.indexes = options.get('indexes').strip().split('\n')
+        self.disabled_updates = int(options.get('disabled_updates', 0))
+        self.queries = options.get('queries', None)
+        self.workers = int(options.get('workers', 0))
+        self.throughput = float(options.get('throughput', float('inf')))
+        self.params = json.loads(options.get('params', "{}"))
 
     def __str__(self):
         return str(self.__dict__)
