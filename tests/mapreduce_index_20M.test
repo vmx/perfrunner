@@ -1,0 +1,33 @@
+[test_case]
+test = perfrunner.tests.mapreduce.MapreduceIndexTest
+title = 1 bucket x 20M x 2KB, non-DGM, 4 x 4 views, no mutations
+summary = Indexing test, 4 nodes, 1 bucket x 20M x 2KB, non-DGM, 4 x 4 views
+larger_is_better = false
+
+[cluster]
+mem_quota = 40960
+initial_nodes = 4
+num_buckets = 1
+
+[compaction]
+db_percentage = 100
+view_percentage = 100
+
+[load]
+items = 20000000
+size = 2048
+workers = 20
+
+[mapreduce]
+disabled_updates = 1
+indexes =
+    A::{"views":{"id_by_city":{"map":"function(doc, meta) {emit(doc.city, null);}"},"id_by_realm_and_coins":{"map":"function(doc, meta) {emit([doc.realm, doc.coins], null);}"},"name_and_email_by_category_and_coins":{"map":"function(doc, meta) {emit(doc.city, [doc.name, doc.email]);}"},"name_and_email_by_city":{"map":"function(doc, meta) {emit(doc.city, [doc.name, doc.email]);}"}}}
+    B::{"views":{"achievements_by_category_and_coins":{"map":"function(doc, meta) {emit([doc.category, doc.coins], doc.achievements);}"},"experts_id_by_realm_and_coins":{"map":"function(doc, meta) {if (doc.category === 2) {emit([doc.realm, doc.coins], null);}}"},"id_by_realm":{"map":"function(doc, meta) {emit(doc.realm, null);}"},"name_by_category_and_coins":{"map":"function(doc, meta) {emit([doc.category, doc.coins], doc.name);}"}}}
+    C::{"views":{"experts_coins_by_name":{"map":"function(doc, meta) {if (doc.category === 2) {emit(doc.name, doc.coins);}}"},"id_by_city":{"map":"function(doc, meta) {emit(doc.city, null);}"},"name_and_email_by_category_and_coins":{"map":"function(doc, meta) {emit(doc.city, [doc.name, doc.email]);}"},"name_and_email_by_realm_and_coins":{"map":"function(doc, meta) {emit([doc.realm, doc.coins], [doc.name, doc.email]);}"}}}
+    D::{"views":{"experts_id_by_realm_and_coins":{"map":"function(doc, meta) {if (doc.category === 2) {emit([doc.realm, doc.coins], null);}}"},"id_by_realm_and_coins":{"map":"function(doc, meta) {emit([doc.realm, doc.coins], null);}"},"name_and_email_by_city":{"map":"function(doc, meta) {emit(doc.city, [doc.name, doc.email]);}"},"name_by_category_and_coins":{"map":"function(doc, meta) {emit([doc.category, doc.coins], doc.name);}"}}}
+
+[access]
+creates = 100
+ops = 20000000
+items = 20000000
+workers = 16
