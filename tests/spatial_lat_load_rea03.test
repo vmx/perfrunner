@@ -1,7 +1,7 @@
 [test_case]
 test = perfrunner.tests.spatial.SpatialQueryLatencyTest
-title = 1 bucket x 12M x non-DGM, 1 x 1 spatial views (3d), 500 mutations/sec/node, 400 queries/sec
-summary = Read-only spatial query test, 4 nodes, 1 bucket x 12M x 3d, non-DGM, 1 x 1 views, 500 mutations/sec/node, 1000 items returned, 400 qps
+title = 1 bucket x 12M x non-DGM, 1 x 1 spatial views (3d), 2500 mutations/sec/node, 200 queries/sec
+summary = Read-only spatial query test, 4 nodes, 1 bucket x 12M x 3d, non-DGM, 1 x 1 views, 2500 mutations/sec/node, 1000 items returned, 200 qps
 larger_is_better = false
 
 [stats]
@@ -30,7 +30,7 @@ dimensionality = 3
 queries = /tmp/spatial/query3/rea03
 data = /tmp/spatial/data/rea03
 workers = 12
-troughput = 400
+throughput = 200
 
 [access]
 creates = 4
