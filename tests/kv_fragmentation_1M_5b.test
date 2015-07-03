@@ -4,10 +4,14 @@ title = 5 buckets x 200K x 1KB, 2 nodes, write-heavy
 summary = 5 buckets x 200K x 1KB, 2 nodes, write-heavy
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 2
 num_buckets = 5
+
+[bucket]
 
 [load]
 items = 200000
@@ -23,3 +27,5 @@ throughput = 2000
 items = 200000
 workers = 1
 time=7200
+
+[worker_settings]

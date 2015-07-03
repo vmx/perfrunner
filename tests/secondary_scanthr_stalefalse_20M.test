@@ -4,10 +4,14 @@ title = Secondary index scan stale=false throughput (scanps),24 rows per scan, 1
 summary = Secondary index scan stale=false throughput test , 4 kv,1 indexer, 1 bucket x 20M x 2KB, 10K ops/sec, single index
 larger_is_better = true
 
+[stats]
+
 [cluster]
 mem_quota = 30000
 initial_nodes = 5
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 100
@@ -31,3 +35,5 @@ deletes = 1
 throughput = 10000
 items = 20000000
 workers = 20
+
+[worker_settings]

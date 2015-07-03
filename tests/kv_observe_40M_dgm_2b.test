@@ -4,10 +4,14 @@ title = PersistTo=1 latency (ms), 2 buckets x 40M x 2KB, 1.25K mutations/sec/nod
 summary = Write-heavy KV test (80/20), 4 nodes, 2 buckets x 40M x 2KB, DGM, 6K mutations/sec
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 4
 num_buckets = 2
+
+[bucket]
 
 [compaction]
 db_percentage = 15
@@ -33,3 +37,5 @@ workers = 12
 working_set = 10
 working_set_access = 98
 time = 3600
+
+[worker_settings]

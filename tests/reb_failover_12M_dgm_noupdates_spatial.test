@@ -4,6 +4,8 @@ title = Rebalance after failover (min), 4 / 1, 1 bucket x 12M x 3d, DGM, 1 x 1 v
 summary = Mixed KV + spatial views rebalance after failover, 4 nodes / 1 failover, 1 bucket x 12M x 3d, 1 x 1 views, no load, 400 qps
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 4
@@ -43,3 +45,5 @@ failover = 1
 sleep_after_failover = 1200
 start_after = 1200
 stop_after = 1200
+
+[worker_settings]

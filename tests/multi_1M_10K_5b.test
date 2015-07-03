@@ -1,10 +1,14 @@
 [test_case]
 test = perfrunner.tests.kv.KVTest
 
+[stats]
+
 [cluster]
 mem_quota = 204800
 initial_nodes = 2
 num_buckets = 5
+
+[bucket]
 
 [load]
 items = 200000
@@ -20,3 +24,5 @@ throughput = 2000
 items = 200000
 workers = 1
 time=600
+
+[worker_settings]

@@ -5,6 +5,8 @@ summary = Append-only revAB test, 100K docs
 larger_is_better = false
 use_workers = 0
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 1
@@ -18,3 +20,5 @@ password =
 items = 100000
 workers = 16
 iterations = 6
+
+[worker_settings]

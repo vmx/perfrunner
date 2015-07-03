@@ -4,10 +4,14 @@ title = 1 bucket x 100M x 2KB, DGM, 4 x 1 views, 500 mutations/sec/node, 400 que
 summary = Read-heavy query test (80/20), 4 nodes, 1 bucket x 100M x 2KB, DGM, 4 x 1 views, 500 mutations/sec/node, 400 qps
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 4
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 10
@@ -38,3 +42,5 @@ working_set_access = 98
 workers = 24
 query_workers = 12
 time = 7200
+
+[worker_settings]

@@ -2,10 +2,14 @@
 test = perfrunner.tests.kv.KVTest
 run_cbcollect_info = false
 
+[stats]
+
 [cluster]
 mem_quota = 2048
 initial_nodes = 1
 num_buckets = 1
+
+[bucket]
 
 [load]
 items = 10000

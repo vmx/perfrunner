@@ -4,6 +4,8 @@ title = 99th percentile "Push To Subscriber" latency (sec), 1 Sync Gateway, 10K 
 summary = 1 Sync Gateway, 10K users, compression ON, conn_db = 16, conn_in = 0
 use_workers = 0
 
+[stats]
+
 [cluster]
 mem_quota = 26624
 initial_nodes = 3
@@ -34,3 +36,5 @@ seriesly_host = 172.23.106.228
 logging_verbose = false
 p95_avg_criteria = 3
 p99_avg_criteria = 5
+
+[worker_settings]

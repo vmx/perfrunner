@@ -4,6 +4,8 @@ title = memcached GET latency (ms), 1 bucket x 600M x 256B, non-DGM
 summary = Read-only KV test, 1 node, 1 bucket x 600M x 256B, non-DGM, 400K ops/sec
 larger_is_better = true
 
+[stats]
+
 [cluster]
 mem_quota = 204800
 initial_nodes = 1
@@ -29,3 +31,5 @@ workers = 38
 time = 3600
 throughput = 400000
 async = 1
+
+[worker_settings]

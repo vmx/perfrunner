@@ -4,6 +4,8 @@ title = N1QL Q5 1Bux20Mx1K, Aggregation Query, 38.4KGops, 9.6KSops, 4.8KQops, GS
 summary = Aggregation Query, 38.4KGops, 9.6KSops, 4.8KQops
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 20480
 index_mem_quota = 100000
@@ -44,3 +46,5 @@ statement = SELECT sum(coins.f) FROM `bucket-1` WHERE capped_small=$1;
 max_parallelism = 1
 scan_consistency = request_plus
 args = ["{capped_small}"]
+
+[worker_settings]

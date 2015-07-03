@@ -4,10 +4,14 @@ title = Rebalance-swap (min), 3 -> 3 / 1, 1 bucket x 100M x 2KB, 1 x 1 views, 10
 summary = Mixed KV + queries rebalance test, 3 -> 4 nodes, 1 bucket x 100M x 2KB, 1 x 1 views, 10K ops/sec, 400 qps
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 3
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 10
@@ -43,3 +47,5 @@ nodes_after = 3
 swap = 1
 start_after = 1200
 stop_after = 1200
+
+[worker_settings]

@@ -2,6 +2,8 @@
 test = perfrunner.tests.multitenancy.EmptyBucketsTest
 use_workers = 0
 
+[stats]
+
 [cluster]
 mem_quota = 204800
 initial_nodes = 1
@@ -10,5 +12,9 @@ min_num_buckets = 1
 max_num_buckets = 101
 incr_num_buckets = 10
 
+[bucket]
+
 [internal]
 maxBucketCount = 101
+
+[worker_settings]

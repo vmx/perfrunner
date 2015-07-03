@@ -4,10 +4,14 @@ title = Rebalance-in (min), 3 -> 4, 1 bucket x 100M x 2KB, DGM, 10K ops/sec
 summary = Mixed rebalance test, 3 -> 4 nodes, 1 bucket x 100M x 2KB, 10K ops/sec
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 3
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 10
@@ -37,3 +41,5 @@ working_set_access = 98
 nodes_after = 4
 start_after = 1200
 stop_after = 1200
+
+[worker_settings]

@@ -4,10 +4,14 @@ title = Index compaction (MB/sec), 1 bucket x 20M x 2KB, non-DGM, 4 x 4 views, 8
 summary = Index compaction test, 4 nodes, 1 bucket x 20M x 2KB, non-DGM, 4 x 4 views
 larger_is_better = true
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 4
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 100
@@ -20,3 +24,5 @@ workers = 20
 
 [index]
 views = [4, 4, 4, 4]
+
+[worker_settings]

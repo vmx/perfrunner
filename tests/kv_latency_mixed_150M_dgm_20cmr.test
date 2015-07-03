@@ -4,10 +4,14 @@ title = latency (ms), mixed, 1 bucket x 150M x 2KB, DGM, 6K ops/sec, 20%% cache 
 summary = Mixed KV test, 4 nodes, 1 bucket x 150M x 2KB, 20%% cache miss rate, 6K ops/sec
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 51200
 initial_nodes = 4
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 2
@@ -34,3 +38,5 @@ working_set = 20
 working_set_access = 80
 time = 5400
 async = 1
+
+[worker_settings]

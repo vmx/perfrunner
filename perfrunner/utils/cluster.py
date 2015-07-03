@@ -52,12 +52,13 @@ class ClusterManager(object):
             self.rest.set_index_mem_quota(server, self.index_mem_quota)
 
     def set_index_settings(self):
-        settings = self.test_config.secondaryindex_settings.settings
-        for _, servers in self.cluster_spec.yield_servers_by_role('index'):
-            for server in servers:
-                self.rest.set_index_settings(server, settings)
-        self.remote.restart()
-        time.sleep(60)
+        if self.test_config.secondaryindex_settings:
+            settings = self.test_config.secondaryindex_settings.settings
+            for _, servers in self.cluster_spec.yield_servers_by_role('index'):
+                for server in servers:
+                    self.rest.set_index_settings(server, settings)
+            self.remote.restart()
+            time.sleep(60)
 
     def set_services(self):
         for (_, servers), initial_nodes in zip(self.clusters(),
@@ -123,15 +124,18 @@ class ClusterManager(object):
 
     def configure_auto_compaction(self):
         compaction_settings = self.test_config.compaction
-        for master in self.masters():
-            self.rest.configure_auto_compaction(master, compaction_settings)
+        if compaction_settings:
+            for master in self.masters():
+                self.rest.configure_auto_compaction(master,
+                                                    compaction_settings)
 
     def configure_internal_settings(self):
         internal_settings = self.test_config.internal_settings
-        for master in self.masters():
-            for parameter, value in internal_settings.items():
-                self.rest.set_internal_settings(master,
-                                                {parameter: int(value)})
+        if internal_settings:
+            for master in self.masters():
+                for parameter, value in internal_settings.items():
+                    self.rest.set_internal_settings(master,
+                                                    {parameter: int(value)})
 
     def tweak_memory(self):
         self.remote.reset_swap()
@@ -197,15 +201,17 @@ class ClusterManager(object):
 
     def change_watermarks(self):
         watermark_settings = self.test_config.watermark_settings
-        for host_port, initial_nodes in zip(self.servers(),
-                                            self.initial_nodes):
-            host = host_port.split(':')[0]
-            memcached_port = self.rest.get_memcached_port(host_port)
-            for bucket in self.test_config.buckets:
-                for key, val in watermark_settings.items():
-                    val = self.memcached.calc_watermark(val, self.mem_quota)
-                    self.memcached.set_flusher_param(host, memcached_port,
-                                                     bucket, key, val)
+        if watermark_settings:
+            for host_port, initial_nodes in zip(self.servers(),
+                                                self.initial_nodes):
+                host = host_port.split(':')[0]
+                memcached_port = self.rest.get_memcached_port(host_port)
+                for bucket in self.test_config.buckets:
+                    for key, val in watermark_settings.items():
+                        val = self.memcached.calc_watermark(val,
+                                                            self.mem_quota)
+                        self.memcached.set_flusher_param(host, memcached_port,
+                                                         bucket, key, val)
 
     def start_cbq_engine(self):
         if self.test_config.cluster.run_cbq:
