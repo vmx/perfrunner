@@ -26,6 +26,8 @@ doc_partitions = 4
 indexes =
     by_email_{partition_id}::CREATE INDEX {name} ON `{bucket}` (email) where partition_id == {partition_id} using gsi;
 
+[secondary]
+
 [access]
 creates = 0
 reads = 80

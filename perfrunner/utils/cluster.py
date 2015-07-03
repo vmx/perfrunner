@@ -52,15 +52,15 @@ class ClusterManager(object):
             self.rest.set_index_mem_quota(server, self.index_mem_quota)
 
     def set_query_settings(self):
-        settings = self.test_config.n1ql_settings.settings
         for _, servers in self.cluster_spec.yield_servers_by_role('n1ql'):
             for server in servers:
+                settings = self.test_config.n1ql_settings.settings
                 self.rest.set_query_settings(server, settings)
 
     def set_index_settings(self):
-        settings = self.test_config.secondaryindex_settings.settings
         for _, servers in self.cluster_spec.yield_servers_by_role('index'):
             for server in servers:
+                settings = self.test_config.secondaryindex_settings.settings
                 self.rest.set_index_settings(server, settings)
         self.remote.restart()
         time.sleep(60)

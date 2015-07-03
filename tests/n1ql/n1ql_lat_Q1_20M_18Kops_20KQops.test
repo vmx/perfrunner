@@ -22,6 +22,10 @@ workers = 20
 doc_gen = reverse_lookup
 doc_partitions = 1
 
+[n1ql]
+
+[secondary]
+
 [access]
 creates = 0
 reads = 80

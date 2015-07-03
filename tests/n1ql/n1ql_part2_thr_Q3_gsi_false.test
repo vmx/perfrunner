@@ -26,6 +26,8 @@ doc_partitions = 2
 indexes =
     by_capped_small_{partition_id}::CREATE INDEX {name} ON `{bucket}` (capped_small) WHERE partition_id == {partition_id} using gsi;
 
+[secondary]
+
 [access]
 creates = 0
 reads = 80
