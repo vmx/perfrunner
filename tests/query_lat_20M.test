@@ -12,6 +12,8 @@ mem_quota = 40960
 initial_nodes = 4
 num_buckets = 1
 
+[bucket]
+
 [compaction]
 db_percentage = 20
 
@@ -34,3 +36,5 @@ items = 20000000
 workers = 12
 query_workers = 12
 time = 7200
+
+[worker_settings]

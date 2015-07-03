@@ -4,11 +4,15 @@ title = Secondary index 50K KV ops/sec scan latency(ms), 1 bucket x 20M x 2KB, n
 summary = Secondary index 50K KV ops/sec scan latency(ms) test , 4 kv, 1 index node, 1 bucket x 20M x 2KB, single index
 larger_is_better = true
 
+[stats]
+
 [cluster]
 mem_quota = 30000
 index_mem_quota = 30000
 initial_nodes = 5
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 100
@@ -31,3 +35,5 @@ deletes = 1
 throughput = 50000
 items = 100000000
 workers = 20
+
+[worker_settings]

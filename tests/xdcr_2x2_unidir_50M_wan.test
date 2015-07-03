@@ -1,6 +1,8 @@
 [test_case]
 test = perfrunner.tests.xdcr.SymmetricXdcrTest
 
+[stats]
+
 [cluster]
 mem_quota = 204800
 initial_nodes = 5 5
@@ -33,3 +35,5 @@ throughput = 5000
 items = 50000000
 workers = 20
 time = 1800
+
+[worker_settings]

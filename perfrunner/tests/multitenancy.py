@@ -112,21 +112,23 @@ class LoadTest(EmptyBucketsTest):
 
     def _load(self, buckets):
         load_settings = self.test_config.load_settings
-        load_settings.items /= len(buckets)
+        if load_settings:
+            load_settings.items /= len(buckets)
 
-        target_iterator = TargetIterator(self.master_node, buckets)
-        self.worker_manager.run_workload(load_settings, target_iterator)
-        self.worker_manager.wait_for_workers()
+            target_iterator = TargetIterator(self.master_node, buckets)
+            self.worker_manager.run_workload(load_settings, target_iterator)
+            self.worker_manager.wait_for_workers()
 
     def _access(self, buckets):
         access_settings = self.test_config.access_settings
-        access_settings.items /= len(buckets)
-        access_settings.throughput /= len(buckets)
+        if access_settings:
+            access_settings.items /= len(buckets)
+            access_settings.throughput /= len(buckets)
 
-        target_iterator = TargetIterator(self.master_node, buckets)
-        self.worker_manager.run_workload(access_settings, target_iterator,
-                                         timer=self.ITERATION_DELAY)
-        self.worker_manager.wait_for_workers()
+            target_iterator = TargetIterator(self.master_node, buckets)
+            self.worker_manager.run_workload(access_settings, target_iterator,
+                                             timer=self.ITERATION_DELAY)
+            self.worker_manager.wait_for_workers()
 
     def _wait_for_persistence(self, buckets):
         for bucket_name in buckets:

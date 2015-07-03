@@ -4,10 +4,14 @@ title = PersistTo=1 latency (ms), 1 bucket x 200M x 1KB, 250 mutations/sec/node
 summary = Read-heavy KV test (80/20), 4 nodes, 1 bucket x 200M x 1KB, DGM, 1K mutations/sec
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 51200
 initial_nodes = 4
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 100
@@ -33,3 +37,5 @@ workers = 10
 working_set = 10
 working_set_access = 98
 time = 3600
+
+[worker_settings]

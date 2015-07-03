@@ -1,3 +1,11 @@
+[test_case]
+
+[stats]
+
 [cluster]
 mem_quota = 1024
 initial_nodes = 1
+
+[bucket]
+
+[worker_settings]

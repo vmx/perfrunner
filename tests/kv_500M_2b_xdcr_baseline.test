@@ -1,10 +1,14 @@
 [test_case]
 test = perfrunner.tests.kv.KVTest
 
+[stats]
+
 [cluster]
 mem_quota = 204800
 initial_nodes = 5
 num_buckets = 2
+
+[bucket]
 
 [compaction]
 db_percentage = 10
@@ -30,3 +34,5 @@ workers = 30
 working_set = 10
 working_set_access = 98
 time = 3600
+
+[worker_settings]

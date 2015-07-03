@@ -4,10 +4,14 @@ title = 1 bucket x 6M x 3d, non-DGM, 1 x 1 spatial view (3d), no mutations
 summary = Spatial indexing test, 4 nodes, 1 bucket x 6M x 3d, non-DGM, 4 x 4 spatial views (rea03 dataset)
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 4
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 100
@@ -31,3 +35,5 @@ creates = 100
 ops = 5958999
 items = 6000000
 workers = 2
+
+[worker_settings]

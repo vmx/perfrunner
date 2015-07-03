@@ -3,11 +3,15 @@ test = perfrunner.tests.rebalance.RebalanceKVTest
 title = Rebalance-out (min), 8 -> 6, 1 bucket x 100M x 2KB, DGM
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 8
 num_buckets = 1
 group_number = 3
+
+[bucket]
 
 [load]
 items = 100000000
@@ -34,3 +38,5 @@ working_set_access = 98
 nodes_after = 6
 start_after = 1200
 stop_after = 1200
+
+[worker_settings]

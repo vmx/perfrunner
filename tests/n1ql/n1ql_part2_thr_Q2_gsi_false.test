@@ -4,6 +4,8 @@ title = N1QL Q2 1Bux20Mx1K, Singleton Unique Lookup, Dual Partition, 28.8KGops, 
 summary = Singleton Unique Lookup, Partition, 28.8KGops, 7.2KSops
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 20480
 index_mem_quota = 100000
@@ -46,3 +48,5 @@ prepared = singleton_unique_lookup_{partition_id}
 statement = SELECT * FROM `bucket-1` WHERE partition_id == {partition_id} and email == $1;
 scan_consistency = request_plus
 args = ["{email}"]
+
+[worker_settings]

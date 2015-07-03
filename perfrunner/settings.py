@@ -20,6 +20,16 @@ def safe(method, *args, **kargs):
         logger.warn('Failed to get option from config: {}'.format(e))
 
 
+@decorator
+def mandatory(method, *args, **kargs):
+    try:
+        return method(*args, **kargs)
+    except NoSectionError as ex:
+        config = args[0]
+        logger.interrupt('Failed to get section from config file {}: {}'
+                         .format(config.name, ex))
+
+
 class Config(object):
 
     def __init__(self):
@@ -146,19 +156,25 @@ class ClusterSpec(Config):
 class TestConfig(Config):
 
     @property
+    @mandatory
     def test_case(self):
         options = self._get_options_as_dict('test_case')
-        return TestCaseSettings(options)
+        if options:
+            return TestCaseSettings(options)
 
     @property
+    @mandatory
     def cluster(self):
         options = self._get_options_as_dict('cluster')
-        return ClusterSettings(options)
+        if options:
+            return ClusterSettings(options)
 
     @property
+    @mandatory
     def bucket(self):
         options = self._get_options_as_dict('bucket')
-        return BucketSettings(options)
+        if options:
+            return BucketSettings(options)
 
     @property
     def buckets(self):
@@ -173,96 +189,127 @@ class TestConfig(Config):
         ]
 
     @property
+    @safe
     def compaction(self):
         options = self._get_options_as_dict('compaction')
-        return CompactionSettings(options)
+        if options:
+            return CompactionSettings(options)
 
     @property
+    @safe
     def watermark_settings(self):
         return self._get_options_as_dict('watermarks')
 
     @property
+    @safe
     def load_settings(self):
         options = self._get_options_as_dict('load')
-        return LoadSettings(options)
+        if options:
+            return LoadSettings(options)
 
     @property
+    @safe
     def hot_load_settings(self):
         options = self._get_options_as_dict('hot_load')
-        hot_load = HotLoadSettings(options)
+        if options:
+            hot_load = HotLoadSettings(options)
 
-        load = self.load_settings
-        hot_load.doc_gen = load.doc_gen
-        hot_load.doc_partitions = load.doc_partitions
-        hot_load.size = load.size
-        return hot_load
+            load = self.load_settings
+            hot_load.doc_gen = load.doc_gen
+            hot_load.doc_partitions = load.doc_partitions
+            hot_load.size = load.size
+            return hot_load
 
     @property
+    @safe
     def xdcr_settings(self):
         options = self._get_options_as_dict('xdcr')
-        return XDCRSettings(options)
+        if options:
+            return XDCRSettings(options)
 
     @property
+    @safe
     def index_settings(self):
         options = self._get_options_as_dict('index')
-        return IndexSettings(options)
+        if options:
+            return IndexSettings(options)
 
     @property
+    @safe
     def spatial_settings(self):
         options = self._get_options_as_dict('spatial')
-        return SpatialSettings(options)
+        if options:
+            return SpatialSettings(options)
 
     @property
+    @safe
     def secondaryindex_settings(self):
         options = self._get_options_as_dict('secondary')
-        return SecondaryIndexSettings(options)
+        if options:
+            return SecondaryIndexSettings(options)
 
     @property
+    @safe
     def n1ql_settings(self):
         options = self._get_options_as_dict('n1ql')
-        return N1QLSettings(options)
+        if options:
+            return N1QLSettings(options)
 
     @property
+    @safe
     def access_settings(self):
         options = self._get_options_as_dict('access')
-        access = AccessSettings(options)
-        access.resolve_subcategories(self)
+        if options:
+            access = AccessSettings(options)
+            access.resolve_subcategories(self)
 
-        load = self.load_settings
-        access.doc_gen = load.doc_gen
-        access.doc_partitions = load.doc_partitions
-        access.size = load.size
-        return access
+            load = self.load_settings
+            access.doc_gen = load.doc_gen
+            access.doc_partitions = load.doc_partitions
+            access.size = load.size
+            return access
 
     @property
+    @safe
     def rebalance_settings(self):
         options = self._get_options_as_dict('rebalance')
-        return RebalanceSettings(options)
+        if options:
+            return RebalanceSettings(options)
 
     @property
+    @mandatory
     def stats_settings(self):
         options = self._get_options_as_dict('stats')
-        return StatsSettings(options)
+        if options:
+            return StatsSettings(options)
 
     @property
+    @safe
     def internal_settings(self):
         return self._get_options_as_dict('internal')
 
     @property
+    @safe
     def gateway_settings(self):
         options = self._get_options_as_dict('gateway')
-        return GatewaySettings(options)
+        if options:
+            return GatewaySettings(options)
 
     @property
+    @safe
     def gateload_settings(self):
         options = self._get_options_as_dict('gateload')
-        return GateloadSettings(options)
+        if options:
+            return GateloadSettings(options)
 
     @property
+    @mandatory
     def worker_settings(self):
         options = self._get_options_as_dict('worker_settings')
-        return WorkerSettings(options)
+        if options:
+            return WorkerSettings(options)
 
+    @safe
     def get_n1ql_query_definition(self, query_name):
         return self._get_options_as_dict('n1ql-{}'.format(query_name))
 
@@ -605,8 +652,6 @@ class IndexSettings(object):
 class SpatialSettings(object):
 
     def __init__(self, options):
-        if not options:
-            return
         self._section = options['_section']
         self.indexes = []
         if 'indexes' in options:

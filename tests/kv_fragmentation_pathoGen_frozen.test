@@ -5,6 +5,8 @@ summary = Repeatedly ramp document size from 8 to 8192 bytes, 1M docs, 20 iterat
 larger_is_better = false
 use_workers = 0
 
+[stats]
+
 [cluster]
 mem_quota = 8192
 initial_nodes = 1
@@ -18,3 +20,5 @@ password =
 items = 1000000
 workers = 21
 iterations = 20
+
+[worker_settings]

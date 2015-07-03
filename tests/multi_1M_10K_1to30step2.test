@@ -1,6 +1,8 @@
 [test_case]
 test = perfrunner.tests.multitenancy.LoadTest
 
+[stats]
+
 [cluster]
 mem_quota = 204800
 initial_nodes = 1
@@ -8,6 +10,8 @@ num_buckets = 0
 min_num_buckets = 1
 max_num_buckets = 31
 incr_num_buckets = 2
+
+[bucket]
 
 [internal]
 maxBucketCount = 40
@@ -25,3 +29,5 @@ deletes = 1
 throughput = 10000
 items = 2000
 workers = 1
+
+[worker_settings]

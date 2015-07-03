@@ -5,10 +5,14 @@ summary = Mixed KV test, 4 nodes, 10 buckets x 5M x 2KB, DGM, 10K ops/sec
 larger_is_better = false
 level = Advanced
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 4
 num_buckets = 10
+
+[bucket]
 
 [load]
 items = 5000000
@@ -31,3 +35,5 @@ working_set = 30
 working_set_access = 98
 workers = 5
 time=3600
+
+[worker_settings]

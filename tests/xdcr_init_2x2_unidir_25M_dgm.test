@@ -4,10 +4,14 @@ title = Avg. initial XDCR rate (items/sec), 2 -> 2 UniDir, 1 bucket x 25M x 2KB,
 summary = Initial XDCR test, 2->2 nodes, 1 bucket x 25M x 2KB, DGM, no compaction, UniDir
 larger_is_better = true
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 2 2
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 100
@@ -20,3 +24,5 @@ workers = 20
 
 [xdcr]
 replication_type = unidir
+
+[worker_settings]

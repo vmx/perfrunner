@@ -128,45 +128,49 @@ class PerfTest(object):
     def load(self, load_settings=None, target_iterator=None):
         if load_settings is None:
             load_settings = self.test_config.load_settings
-        if target_iterator is None:
-            target_iterator = self.target_iterator
-        if self.test_config.spatial_settings:
-            load_settings.spatial = self.test_config.spatial_settings
-        log_phase('load phase', load_settings)
-        self.worker_manager.run_workload(load_settings, target_iterator)
-        self.worker_manager.wait_for_workers()
+        if load_settings:
+            if target_iterator is None:
+                target_iterator = self.target_iterator
+            if self.test_config.spatial_settings:
+                load_settings.spatial = self.test_config.spatial_settings
+            log_phase('load phase', load_settings)
+            self.worker_manager.run_workload(load_settings, self.target_iterator)
+            self.worker_manager.wait_for_workers()
 
     def hot_load(self):
         hot_load_settings = self.test_config.hot_load_settings
-        if self.test_config.spatial_settings:
-            hot_load_settings.spatial = self.test_config.spatial_settings
+        if hot_load_settings:
+            if self.test_config.spatial_settings:
+                hot_load_settings.spatial = self.test_config.spatial_settings
 
-        log_phase('hot load phase', hot_load_settings)
-        self.worker_manager.run_workload(hot_load_settings,
-                                         self.target_iterator)
-        self.worker_manager.wait_for_workers()
+            log_phase('hot load phase', hot_load_settings)
+            self.worker_manager.run_workload(hot_load_settings,
+                                             self.target_iterator)
+            self.worker_manager.wait_for_workers()
 
     def access(self, access_settings=None):
         if access_settings is None:
             access_settings = self.test_config.access_settings
-        if self.test_config.spatial_settings:
-            access_settings.spatial = self.test_config.spatial_settings
+        if access_settings:
+            if self.test_config.spatial_settings:
+                access_settings.spatial = self.test_config.spatial_settings
 
-        log_phase('access phase', access_settings)
-        self.worker_manager.run_workload(access_settings, self.target_iterator)
-        self.worker_manager.wait_for_workers()
+            log_phase('access phase', access_settings)
+            self.worker_manager.run_workload(access_settings, self.target_iterator)
+            self.worker_manager.wait_for_workers()
 
     def access_bg(self, access_settings=None):
         if access_settings is None:
             access_settings = self.test_config.access_settings
-        if self.test_config.spatial_settings:
-            access_settings.spatial = self.test_config.spatial_settings
+        if access_settings:
+            if self.test_config.spatial_settings:
+                access_settings.spatial = self.test_config.spatial_settings
 
-        log_phase('access phase in background', access_settings)
-        access_settings.index_type = self.test_config.index_settings.index_type
-        access_settings.ddocs = getattr(self, 'ddocs', None)
-        self.worker_manager.run_workload(access_settings, self.target_iterator,
-                                         timer=access_settings.time)
+            log_phase('access phase in background', access_settings)
+            access_settings.index_type = self.test_config.index_settings.index_type
+            access_settings.ddocs = getattr(self, 'ddocs', None)
+            self.worker_manager.run_workload(access_settings, self.target_iterator,
+                                             timer=access_settings.time)
 
     def timer(self):
         access_settings = self.test_config.access_settings

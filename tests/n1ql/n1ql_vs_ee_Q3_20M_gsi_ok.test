@@ -4,6 +4,8 @@ title = N1QL Q3 1Bux20Mx1K, EE Range Scan, 14.4KGops, 3.6KSops, GSI, stale=ok
 summary = EE Range Scan, 14.4KGops, 3.6KSops
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 20480
 index_mem_quota = 10000
@@ -46,3 +48,5 @@ prepared = range_scan_{partition_id}
 statement = SELECT name AS _name, street AS _street FROM `bucket-1` WHERE partition_id == {partition_id} and capped_small == $1;
 scan_consistency = not_bounded
 args = ["{capped_small}"]
+
+[worker_settings]

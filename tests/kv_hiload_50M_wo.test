@@ -4,6 +4,8 @@ title = Max memcached throughput, SETs/sec, 1 bucket x 100M x 256B, non-DGM
 summary = Write-only KV test, 1 node, 1 bucket x 100M x 256B, non-DGM, 150K ops/sec
 larger_is_better = true
 
+[stats]
+
 [cluster]
 mem_quota = 163840
 initial_nodes = 1
@@ -30,3 +32,5 @@ workers = 38
 throughput = 150000
 time = 3600
 async = 1
+
+[worker_settings]

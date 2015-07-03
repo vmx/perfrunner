@@ -4,10 +4,14 @@ title = Avg. write queue (10³ items), 1 bucket x 100M x 1KB, 3K updates/sec/nod
 summary = Write-heavy KV test (80/20), 2 nodes, 1 buckets x 100M x 1KB, 3K updates/sec/node
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 51200
 initial_nodes = 2
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 2
@@ -34,3 +38,5 @@ working_set = 10
 working_set_access = 98
 time = 5400
 async = 1
+
+[worker_settings]

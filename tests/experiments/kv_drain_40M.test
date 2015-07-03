@@ -4,6 +4,8 @@ title = Avg. drain rate (items/sec), 1 bucket x 40M x 1KB, DGM
 summary = Write-heavy KV test (80/20), 1 node, 1 bucket x 40M x 1KB, 6K ops/sec
 larger_is_better = true
 
+[stats]
+
 [cluster]
 mem_quota = 40960
 initial_nodes = 1
@@ -37,3 +39,5 @@ workers = 36
 working_set = 40
 working_set_access = 98
 time = 1200
+
+[worker_settings]

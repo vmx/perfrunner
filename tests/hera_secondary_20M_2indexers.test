@@ -4,10 +4,14 @@ title = 1 bucket x 20M x 2KB, one index, two indexers, no mutations during initi
 summary = Secondary Indexing test, 4 KV nodes, 1 2i node 1 bucket x 20M x 2KB
 larger_is_better = false
 
+[stats]
+
 [cluster]
 mem_quota = 60000
 initial_nodes = 6
 num_buckets = 1
+
+[bucket]
 
 [compaction]
 db_percentage = 100
@@ -28,3 +32,5 @@ creates = 100
 ops = 20000000
 items = 20000000
 workers = 20
+
+[worker_settings]

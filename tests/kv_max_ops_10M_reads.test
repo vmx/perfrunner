@@ -4,6 +4,8 @@ title = Pillowfight, 80/20 R/W x 10M 1K items
 summary = Pillowfight op/sec, 10M items with read heavy workload
 larger_is_better = true
 
+[stats]
+
 [cluster]
 mem_quota = 51200
 initial_nodes = 2
@@ -23,3 +25,5 @@ workers = 50
 reads = 80
 updates = 20
 clients_per_cluster = 1
+
+[worker_settings]
