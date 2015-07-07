@@ -1,0 +1,74 @@
+[test_case]
+test = perfrunner.tests.mapreduce.MapreduceQueryLatencyTest
+title = 1 bucket x 20M x 2KB, non-DGM, 4 x 1 views, 2500 mutations/sec/node, 400 queries/sec, stale=false
+summary = Read-heavy query test (80/20), 4 nodes, 1 bucket x 20M x 2KB, non-DGM, 4 x 1 views, 2500 mutations/sec/node, 400 qps
+larger_is_better = false
+
+[stats]
+
+[cluster]
+mem_quota = 40960
+initial_nodes = 4
+num_buckets = 1
+
+[bucket]
+
+[compaction]
+db_percentage = 20
+
+[load]
+items = 20000000
+size = 2048
+workers = 20
+
+[mapreduce]
+indexes =
+    A::{"views":{"id_by_city":{"map":"function(doc, meta) {emit(doc.city, null);}"}}}
+    B::{"views":{"name_and_email_by_category_and_coins":{"map":"function(doc, meta) {emit(doc.city, [doc.name, doc.email]);}"}}}
+    C::{"views":{"id_by_realm_and_coins":{"map":"function(doc, meta) {emit([doc.realm, doc.coins], null);}"}}}
+    D::{"views":{"name_and_email_by_city":{"map":"function(doc, meta) {emit(doc.city, [doc.name, doc.email]);}"}}}
+view_names =
+    A::id_by_city
+    A::id_by_city
+    A::id_by_city
+    A::id_by_city
+    A::id_by_city
+    A::id_by_city
+    A::id_by_city
+    A::id_by_city
+    A::id_by_city
+    B::name_and_email_by_category_and_coins
+    B::name_and_email_by_category_and_coins
+    B::name_and_email_by_category_and_coins
+    B::name_and_email_by_category_and_coins
+    B::name_and_email_by_category_and_coins
+    B::name_and_email_by_category_and_coins
+    C::id_by_realm_and_coins
+    C::id_by_realm_and_coins
+    C::id_by_realm_and_coins
+    C::id_by_realm_and_coins
+    C::id_by_realm_and_coins
+    D::name_and_email_by_city
+    D::name_and_email_by_city
+    D::name_and_email_by_city
+    D::name_and_email_by_city
+    D::name_and_email_by_city
+    D::name_and_email_by_city
+    D::name_and_email_by_city
+    D::name_and_email_by_city
+    D::name_and_email_by_city
+throughput = 400
+workers = 12
+params = {"stale": "false"}
+
+[access]
+creates = 4
+reads = 80
+updates = 12
+deletes = 4
+throughput = 10000
+items = 20000000
+workers = 12
+time = 7200
+
+[worker_settings]

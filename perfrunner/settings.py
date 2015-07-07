@@ -663,6 +663,8 @@ class MapreduceSettings(object):
         self.indexes = []
         if 'indexes' in options:
             self.indexes = options.get('indexes').strip().split('\n')
+        if 'view_names' in options:
+            self.view_names = options.get('view_names').strip().split('\n')
         self.disabled_updates = int(options.get('disabled_updates', 0))
         self.queries = options.get('queries', None)
         self.workers = int(options.get('workers', 0))

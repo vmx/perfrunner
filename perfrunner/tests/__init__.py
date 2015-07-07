@@ -133,6 +133,9 @@ class PerfTest(object):
                 target_iterator = self.target_iterator
             if self.test_config.spatial_settings:
                 load_settings.spatial = self.test_config.spatial_settings
+            if self.test_config.mapreduce_settings:
+                load_settings.mapreduce = self.test_config.mapreduce_settings
+
             log_phase('load phase', load_settings)
             self.worker_manager.run_workload(load_settings, self.target_iterator)
             self.worker_manager.wait_for_workers()
@@ -142,6 +145,9 @@ class PerfTest(object):
         if hot_load_settings:
             if self.test_config.spatial_settings:
                 hot_load_settings.spatial = self.test_config.spatial_settings
+            if self.test_config.mapreduce_settings:
+                hot_load_settings.mapreduce = \
+                    self.test_config.mapreduce_settings
 
             log_phase('hot load phase', hot_load_settings)
             self.worker_manager.run_workload(hot_load_settings,
@@ -154,6 +160,8 @@ class PerfTest(object):
         if access_settings:
             if self.test_config.spatial_settings:
                 access_settings.spatial = self.test_config.spatial_settings
+            if self.test_config.mapreduce_settings:
+                access_settings.mapreduce = self.test_config.mapreduce_settings
 
             log_phase('access phase', access_settings)
             self.worker_manager.run_workload(access_settings, self.target_iterator)
@@ -165,6 +173,8 @@ class PerfTest(object):
         if access_settings:
             if self.test_config.spatial_settings:
                 access_settings.spatial = self.test_config.spatial_settings
+            if self.test_config.mapreduce_settings:
+                access_settings.mapreduce = self.test_config.mapreduce_settings
 
             log_phase('access phase in background', access_settings)
             access_settings.index_type = self.test_config.index_settings.index_type
