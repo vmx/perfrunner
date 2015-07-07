@@ -1,4 +1,4 @@
-from perfrunner.tests.view import ViewIndexTest
+from perfrunner.tests.view import ViewIndexTest, ViewQueryTest
 
 
 class MapreduceMixin(object):
@@ -18,3 +18,27 @@ class MapreduceMixin(object):
 
 class MapreduceIndexTest(MapreduceMixin, ViewIndexTest):
     pass
+
+
+class MapreduceQueryTest(MapreduceMixin, ViewQueryTest):
+    COLLECTORS = {'latency': True, 'mapreduce_latency': True}
+
+
+class MapreduceQueryLatencyTest(MapreduceQueryTest):
+
+    """The basic test for latency measurements.
+
+    The class itself only adds calculation and posting of query latency.
+    """
+
+    def run(self):
+        super(MapreduceQueryLatencyTest, self).run()
+
+        if self.test_config.stats_settings.enabled:
+            self.reporter.post_to_sf(
+                *self.metric_helper.calc_query_latency(percentile=80)
+            )
+            if self.test_config.stats_settings.post_rss:
+                self.reporter.post_to_sf(
+                    *self.metric_helper.calc_max_beam_rss()
+                )
