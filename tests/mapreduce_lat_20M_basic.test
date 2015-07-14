@@ -1,0 +1,47 @@
+[test_case]
+test = perfrunner.tests.mapreduce.MapreduceQueryLatencyTest
+title = 1 node, 20M docs, 3 views, 100 updates/sec, 100 queries/sec, stale=false, basic queries
+summary = Write-only query test, 1 node, 1 bucket x 20M x 1KB, 3 views, 100 updates/sec, 100 qps
+larger_is_better = false
+
+[stats]
+
+[cluster]
+mem_quota = 204800
+initial_nodes = 1
+num_buckets = 1
+
+[bucket]
+replica_number = 0
+
+[compaction]
+db_percentage = 10
+
+[load]
+items = 20000000
+size = 1024
+workers = 20
+doc_gen = new
+
+[mapreduce]
+indexes =
+    basic::{"views":{"name_and_street_by_city":{"map":"function(doc, meta) {emit(doc.city.f.f,[doc.name.f.f.f, doc.street.f.f]);}"}, "name_and_email_by_county":{"map":"function(doc, meta) {emit(doc.county.f.f,[doc.name.f.f.f, doc.street.f.f]);}"}, "achievements_by_realm":{"map":"function(doc, meta) {emit(doc.realm.f, doc.achievements);}"}}}
+view_names =
+    basic::name_and_street_by_city
+    basic::name_and_email_by_county
+    basic::achievements_by_realm
+params = {"stale": "false"}
+throughput = 100
+workers = 1
+
+[access]
+creates = 0
+reads = 0
+updates = 100
+deletes = 0
+throughput = 100
+items = 20000000
+workers = 1
+time = 3600
+
+[worker_settings]
