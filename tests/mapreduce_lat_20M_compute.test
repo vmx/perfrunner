@@ -1,0 +1,48 @@
+[test_case]
+test = perfrunner.tests.mapreduce.MapreduceQueryLatencyTest
+title = 1 node, 20M docs, 3 views, 100 updates/sec, 100 queries/sec, stale=false, compute-intensive queries
+summary = Write-only query test, 1 node, 1 bucket x 20M x 1KB, 3 views, 100 sets/sec, 100 qps
+larger_is_better = false
+
+[stats]
+
+[cluster]
+mem_quota = 204800
+initial_nodes = 1
+num_buckets = 1
+
+[bucket]
+replica_number = 0
+
+[compaction]
+db_percentage = 10
+
+[load]
+items = 20000000
+size = 1024
+workers = 20
+doc_gen = new
+
+[mapreduce]
+indexes =
+    compute::{"views":{"calc_by_city":{"map":"function(doc, meta) {\n    var calc = [];\n    for (var i = 0; i < doc.achievements.length; i++) {\n        for (var j = 0; j < doc.gmtime.length; j++) {\n            var x = Math.random() * Math.exp(i + j),\n                y = Math.sin(doc.achievements[i]),\n                z = Math.cos(doc.gmtime[j]);\n            var agg = Math.round(x * (y - z));\n            if (agg < 0) {\n                calc.push(agg);\n            }\n        }\n    }\n    emit(doc.city.f.f, calc);\n}"},"calc_by_county":{"map":"function(doc, meta) {\n    var calc = [];\n    for (var i = 0; i < doc.achievements.length; i++) {\n        for (var j = 0; j < doc.gmtime.length; j++) {\n            var x = Math.random() * Math.exp(i + j),\n                y = Math.tan(doc.achievements[i]),\n                z = Math.sqrt(doc.gmtime[j]);\n            var agg = Math.round(x * (y - z));\n            if (agg > 0) {\n                calc.push(agg);\n            }\n        }\n    }\n    emit(doc.county.f.f, calc);\n}"},"calc_by_realm":{"map":"function(doc, meta) {\n    var calc = [];\n    for (var i = 0; i < doc.achievements.length; i++) {\n        for (var j = 0; j < doc.gmtime.length; j++) {\n            var x = Math.random() * Math.pow(i + 1, j + 1),\n                y = Math.tan(doc.achievements[i]),\n                z = Math.cos(doc.gmtime[j]);\n            var agg = Math.round(x / (y + z));\n            if (agg > 0) {\n                calc.push(agg);\n            }\n        }\n    }\n    emit(doc.county.f.f, calc);\n}"}}}
+view_names =
+    compute::calc_by_city
+    compute::calc_by_county
+    compute::calc_by_realm
+params = {"stale": "false"}
+throughput = 100
+workers = 1
+
+
+[access]
+creates = 0
+reads = 0
+updates = 100
+deletes = 0
+throughput = 100
+items = 20000000
+workers = 1
+time = 3600
+
+[worker_settings]
