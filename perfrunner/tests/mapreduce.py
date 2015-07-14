@@ -24,6 +24,21 @@ class MapreduceQueryTest(MapreduceMixin, ViewQueryTest):
     COLLECTORS = {'latency': True, 'mapreduce_latency': True}
 
 
+class MapreduceQueryThroughputTest(MapreduceQueryTest):
+
+    """
+    The test adds a simple step to workflow: post-test calculation of average
+    query throughput.
+    """
+
+    def run(self):
+        super(MapreduceQueryThroughputTest, self).run()
+        if self.test_config.stats_settings.enabled:
+            self.reporter.post_to_sf(
+                self.metric_helper.calc_avg_couch_views_ops()
+            )
+
+
 class MapreduceQueryLatencyTest(MapreduceQueryTest):
 
     """The basic test for latency measurements.
