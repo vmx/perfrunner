@@ -1,0 +1,42 @@
+[test_case]
+test = perfrunner.tests.mapreduce.MapreduceIndexLatencyTest
+title = Indexing latency (ms), 1 bucket x 20M x 2KB, non-DGM, 1 view, 2500 mutations/sec/node, 400 queries/sec
+summary = Read-heavy query test (90/10), 4 nodes, 1 bucket x 20M x 2KB, non-DGM, 1 view, 2500 mutations/sec/node, 400 qps
+larger_is_better = false
+
+[stats]
+
+[cluster]
+mem_quota = 40960
+initial_nodes = 4
+num_buckets = 1
+
+[bucket]
+
+[compaction]
+db_percentage = 20
+
+[load]
+items = 20000000
+size = 2048
+workers = 20
+
+[mapreduce]
+indexes =
+    A::{"views":{"id_by_city":{"map":"function(doc, meta) {emit(doc.city, null);}"}}}
+view_names =
+    A::id_by_city
+throughput = 400
+workers = 12
+
+[access]
+creates = 2
+reads = 90
+updates = 6
+deletes = 2
+throughput = 10000
+items = 20000000
+workers = 12
+time = 7200
+
+[worker_settings]
