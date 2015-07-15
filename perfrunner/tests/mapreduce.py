@@ -57,3 +57,24 @@ class MapreduceQueryLatencyTest(MapreduceQueryTest):
                 self.reporter.post_to_sf(
                     *self.metric_helper.calc_max_beam_rss()
                 )
+
+
+class MapreduceIndexLatencyTest(MapreduceQueryTest):
+
+    """
+    Measurement of end-to-end latency which is defined as time it takes for a
+    document to appear in view output after it is stored in KV.
+
+    The test only adds calculation phase. See cbagent project for details.
+    """
+
+    # TODO vmx 2015-07-14: Rename `index_latency` to something less generic
+    COLLECTORS = {'index_latency': True, 'mapreduce_latency': True}
+
+    def run(self):
+        super(MapreduceIndexLatencyTest, self).run()
+
+        if self.test_config.stats_settings.enabled:
+            self.reporter.post_to_sf(
+                *self.metric_helper.calc_observe_latency(percentile=95)
+            )
