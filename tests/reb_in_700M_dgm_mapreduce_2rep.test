@@ -1,0 +1,54 @@
+[test_case]
+test = perfrunner.tests.rebalance.RebalanceWithMapreduceTest
+title = Rebalance-in (min), 6 -> 8, 1 bucket x 700M x 1KB, 2 replicas, DGM, 1 x 1 views
+summary = Mixed KV + queries rebalance test, 6 -> 8 nodes, 1 bucket x 700M x 1KB, 2 replicas, DGM, 1 x 1 views, 10K ops/sec, 400 qps
+larger_is_better = false
+
+[stats]
+
+[cluster]
+mem_quota = 40960
+initial_nodes = 6
+num_buckets = 1
+
+[bucket]
+replica_number = 2
+
+[compaction]
+db_percentage = 5
+
+[load]
+items = 700000000
+size = 1024
+workers = 35
+
+[hot_load]
+items = 700000000
+workers = 35
+working_set = 0.5
+
+[mapreduce]
+indexes =
+    A::{"views":{"id_by_city":{"map":"function(doc, meta) {emit(doc.city, null);}"}}}
+view_names =
+    A::id_by_city
+throughput = 200
+workers = 12
+
+[access]
+creates = 5
+reads = 50
+updates = 40
+deletes = 5
+throughput = 2000
+items = 700000000
+workers = 48
+working_set = 0.5
+working_set_access = 90
+
+[rebalance]
+nodes_after = 8
+start_after = 1200
+stop_after = 1200
+
+[worker_settings]

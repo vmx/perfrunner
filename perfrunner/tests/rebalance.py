@@ -7,7 +7,9 @@ from perfrunner.helpers.cbmonitor import with_stats
 from perfrunner.helpers.misc import server_group
 from perfrunner.tests import PerfTest
 from perfrunner.tests.index import IndexTest
+# TODO vmx 2015-07-15: Remove QueryTest as it is now MapreduceQueryTest
 from perfrunner.tests.query import QueryTest
+from perfrunner.tests.mapreduce import MapreduceQueryTest
 from perfrunner.tests.spatial import SpatialQueryTest
 from perfrunner.tests.xdcr import XdcrTest, SymmetricXdcrTest
 
@@ -230,6 +232,8 @@ class RebalanceKVTest(RebalanceTest):
         self.rebalance()
 
 
+# TODO vmx 2015-07-15: Remove RebalanceWithQueriesTest as it is now
+# RebalanceWithMapreduceTest
 class RebalanceWithQueriesTest(QueryTest, RebalanceTest):
 
     """
@@ -277,6 +281,15 @@ class _RebalanceWithViewsTest(RebalanceTest):
         self.workload = self.test_config.access_settings
         self.access_bg()
         self.rebalance()
+
+
+class RebalanceWithMapreduceTest(_RebalanceWithViewsTest, MapreduceQueryTest):
+
+    """
+    Workflow definition for KV + Index rebalance tests.
+    """
+
+    COLLECTORS = {'latency': True, 'mapreduce_latency': True}
 
 
 class RebalanceWithSpatialTest(_RebalanceWithViewsTest, SpatialQueryTest):
