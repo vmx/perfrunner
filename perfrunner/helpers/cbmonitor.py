@@ -5,11 +5,8 @@ from datetime import datetime
 from multiprocessing import Process
 
 import requests
-# TODO vmx 2015-07-07: Remove SpringQueryLatency as it got replaced by
-# SpringMapreduceQueryLatency
 from cbagent.collectors import (NSServer, PS, TypePerf, IO, Net, ActiveTasks,
-                                SpringLatency, SpringQueryLatency,
-                                SpringMapreduceQueryLatency,
+                                SpringLatency, SpringMapreduceQueryLatency,
                                 SpringSpatialQueryLatency,
                                 SpringN1QLQueryLatency, SecondaryStats, SecondaryLatencyStats,
                                 N1QLStats, SecondaryDebugStats, ObserveLatency, XdcrLag)
@@ -97,11 +94,9 @@ class CbAgent(object):
         self.processes = []
         self.snapshots = []
 
-    # TODO vmx 2015-07-07: Remove query_latency as it is mapreduce_latency now
     def prepare_collectors(self, test,
                            latency=False, secondary_stats=False,
-                           mapreduce_latency=False,
-                           query_latency=False, spatial_latency=False,
+                           mapreduce_latency=False, spatial_latency=False,
                            n1ql_latency=False, n1ql_stats=False,
                            index_latency=False, persist_latency=False,
                            replicate_latency=False, xdcr_lag=False,
@@ -119,9 +114,6 @@ class CbAgent(object):
             self.prepare_tp(clusters)
         if latency:
             self.prepare_latency(clusters, test)
-        # TODO vmx 2015-07-07: Remove query_latency as it is mapreduce_latency now
-        if query_latency:
-            self.prepare_query_latency(clusters, test)
         if mapreduce_latency:
             self.prepare_mapreduce_latency(clusters, test)
         if spatial_latency:
@@ -276,24 +268,6 @@ class CbAgent(object):
                 target_hash(settings.master_node.split(':')[0])
             self.collectors.append(
                 SpringLatency(settings, test.workload, prefix)
-            )
-
-    # TODO vmx 2015-07-07: Remove prepare_query_latency as it is
-    # prepare_mapreduce_latency now
-    def prepare_query_latency(self, clusters, test):
-        params = test.test_config.index_settings.params
-        index_type = test.test_config.index_settings.index_type
-        for cluster in clusters:
-            settings = copy(self.settings)
-            settings.interval = self.lat_interval
-            settings.cluster = cluster
-            settings.master_node = self.clusters[cluster]
-            prefix = test.target_iterator.prefix or \
-                target_hash(settings.master_node.split(':')[0])
-            self.collectors.append(
-                SpringQueryLatency(settings, test.workload, prefix=prefix,
-                                   ddocs=test.ddocs, params=params,
-                                   index_type=index_type)
             )
 
     def prepare_mapreduce_latency(self, clusters, test):
