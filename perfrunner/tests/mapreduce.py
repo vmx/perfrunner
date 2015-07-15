@@ -1,3 +1,8 @@
+import time
+
+from logger import logger
+
+from perfrunner.helpers.cbmonitor import with_stats
 from perfrunner.tests.view import ViewIndexTest, ViewQueryTest
 
 
@@ -78,3 +83,14 @@ class MapreduceIndexLatencyTest(MapreduceQueryTest):
             self.reporter.post_to_sf(
                 *self.metric_helper.calc_observe_latency(percentile=95)
             )
+
+
+class MapreduceQueryManualCompactionTest(MapreduceQueryTest):
+
+    @with_stats
+    def access(self):
+        access_settings = self.test_config.access_settings
+        logger.info('Running phase for {} seconds'.format(access_settings.time))
+        t0 = time.time()
+        while time.time() - t0 < access_settings.time:
+            self.compact_index()
