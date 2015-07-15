@@ -6,9 +6,6 @@ from decorator import decorator
 from perfrunner.helpers.cbmonitor import with_stats
 from perfrunner.helpers.misc import server_group
 from perfrunner.tests import PerfTest
-from perfrunner.tests.index import IndexTest
-# TODO vmx 2015-07-15: Remove QueryTest as it is now MapreduceQueryTest
-from perfrunner.tests.query import QueryTest
 from perfrunner.tests.mapreduce import MapreduceQueryTest
 from perfrunner.tests.spatial import SpatialQueryTest
 from perfrunner.tests.xdcr import XdcrTest, SymmetricXdcrTest
@@ -194,23 +191,6 @@ class StaticRebalanceTest(RebalanceTest):
         self.rebalance()
 
 
-class StaticRebalanceWithIndexTest(IndexTest, RebalanceTest):
-
-    """
-    KV + Index rebalance test with no ongoing workload. Obsolete.
-    """
-
-    def run(self):
-        self.load()
-        self.wait_for_persistence()
-        self.compact_bucket()
-
-        self.define_ddocs()
-        self.build_index()
-
-        self.rebalance()
-
-
 class RebalanceKVTest(RebalanceTest):
 
     """
@@ -226,32 +206,6 @@ class RebalanceKVTest(RebalanceTest):
         self.compact_bucket()
 
         self.hot_load()
-
-        self.workload = self.test_config.access_settings
-        self.access_bg()
-        self.rebalance()
-
-
-# TODO vmx 2015-07-15: Remove RebalanceWithQueriesTest as it is now
-# RebalanceWithMapreduceTest
-class RebalanceWithQueriesTest(QueryTest, RebalanceTest):
-
-    """
-    Workflow definition for KV + Index rebalance tests.
-    """
-
-    COLLECTORS = {'latency': True, 'query_latency': True}
-
-    def run(self):
-        self.load()
-        self.wait_for_persistence()
-
-        self.compact_bucket()
-
-        self.hot_load()
-
-        self.define_ddocs()
-        self.build_index()
 
         self.workload = self.test_config.access_settings
         self.access_bg()
