@@ -49,28 +49,28 @@ class CouchbaseInstaller(object):
                 'couchbase-server-community_toy-{toy}-{version}-toy_{arch}.{pkg}',
                 'couchbase-server-community_cent58-2.5.2-toy-{toy}-{arch}_{version}-toy.{pkg}',
                 'couchbase-server-community_cent58-3.0.0-toy-{toy}-{arch}_{version}-toy.{pkg}',
-                'couchbase-server-community_ubuntu12-3.0.0-toy-{toy}-{arch}_{version}-toy.{pkg}',
+                'couchbase-server-community_ubunt12-3.0.0-toy-{toy}-{arch}_{version}-toy.{pkg}',
                 'couchbase-server-community_cent64-3.0.0-toy-{toy}-{arch}_{version}-toy.{pkg}',
                 'couchbase-server-community_cent64-3.0.1-toy-{toy}-{arch}_{version}-toy.{pkg}',
                 'couchbase-server-community_cent58-master-toy-{toy}-{arch}_{version}-toy.{pkg}',
                 'couchbase-server-community_cent54-master-toy-{toy}-{arch}_{version}-toy.{pkg}',
                 # For toy builds >= Sherlock
-                'couchbase-server-{edition}-{version}-centos6_{arch}.{pkg}',
-                'couchbase-server-{edition}-{version}-ubuntu12.04_{arch}.{pkg}',
+                'couchbase-server-{edition}-{version}-centos6.{arch}.{pkg}',
+                'couchbase-server-{edition}_{version}-ubuntu12.04_amd64.{pkg}',
             )
         elif self.build.pkg == 'rpm':
             patterns = (
                 'couchbase-server-{edition}_centos6_{arch}_{version}-rel.{pkg}',
                 'couchbase-server-{edition}-{version}-centos6.{arch}.{pkg}',
                 'couchbase-server-{edition}_{arch}_{version}-rel.{pkg}',
-                'couchbase-server-{edition}_{version}-{arch}.{pkg}',
+                'couchbase-server-{edition}-{version}.{arch}.{pkg}',
             )
         elif self.build.pkg == 'deb':
             patterns = (
                 'couchbase-server-{edition}_ubuntu_1204_{arch}_{version}-rel.{pkg}',
                 'couchbase-server-{edition}_{version}-ubuntu12.04_amd64.{pkg}',
                 'couchbase-server-{edition}_{arch}_{version}-rel.{pkg}',
-                'couchbase-server-{edition}_{version}-{arch}.{pkg}',
+                'couchbase-server-{edition}_{version}_amd64.{pkg}',
             )
         elif self.build.pkg == 'exe':
             patterns = (
